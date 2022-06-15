@@ -1,0 +1,43 @@
+body, html, #root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-image: url(./corridor.jpeg);
+}
+
+.App {
+  width: 70%;
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: solid 1px black;
+  padding: 50px
+}
+
+.goblin-form label, .goblin-form input{
+  display: block;
+}
+
+.quarter {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  text-align: center;
+}
+
+.goblin img {
+  width: 100px;
+}
+
+.goblin-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
