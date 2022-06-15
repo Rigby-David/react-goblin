@@ -17,7 +17,7 @@ function App() {
   const [visibleGoblins, setVisibleGoblins] = useState(allGoblins);
   const [goblinFormName, setGoblinFormName] = useState('');
   const [goblinFormHP, setGoblinFormHP] = useState('');
-  const [goblinFormColor, setGoblinFormColor] = useState('');
+  const [goblinFormColor, setGoblinFormColor] = useState('pink');
   const [filterString, setFilterString] = useState('');
 
 
@@ -56,6 +56,20 @@ function App() {
     setVisibleGoblins(updatedGoblins);
   }
 
+  function handleFilterGoblinsByHP(filterString) {
+    setFilterString(filterString);
+
+    const goblins = allGoblins.filter(goblin => goblin.hp.includes(filterString));
+    setVisibleGoblins(goblins);
+  }
+
+  function handleFilterGoblinsByColor(filterString) {
+    setFilterString(filterString);
+
+    const goblins = allGoblins.filter(goblin => goblin.color.includes(filterString));
+    setVisibleGoblins(goblins);
+  }
+
   useEffect(() => {
     setVisibleGoblins(allGoblins);
     setFilterString('');
@@ -75,10 +89,14 @@ function App() {
         }}/>
       </div>
       <div className='goblin-filter quarter'>
-        Filter Goblins
+        Filter Goblins by name (case sensitive)
         {/* note that handleFilterGoblins is defined upstairs. This is where the allGoblins array gets filtered */}
 
         <input value={filterString} onChange={(e) => handleFilterGoblins(e.target.value)} />
+        Filter Goblins by HP
+        <input value={filterString} onChange={(e) => handleFilterGoblinsByHP(e.target.value)} />
+        Filter Goblins by color
+        <input value={filterString} onChange={(e) => handleFilterGoblinsByColor(e.target.value)} />
       </div>
       <GoblinForm 
         submitGoblin={submitGoblin} 
