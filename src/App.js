@@ -24,18 +24,26 @@ function App() {
     e.preventDefault();
     
     // on submit, make a new goblin object with a name that comes from the form state, an hp that comes from the form state, and a color that comes from the form state
-
+    const newGoblin = {
+      name: goblinFormName,
+      hp: goblinFormHP,
+      color: goblinFormColor,
+    };
     // update the allGoblins array. Add the new goblin to the allGoblins array immutably.
-    
+    setAllGoblins([...allGoblins, newGoblin]);
     // clear out the goblin form state items by setting them to empty strings. This will cause the form to reset in the UI.
+    goblinFormColor('');
+    goblinFormName('');
+    goblinFormHP('');
   }
 
   function handleDeleteGoblin(name) {
     // find the index of the goblin in allGoblins with this name
-
+    const index = allGoblins.findIndex(goblin => goblin.name === name);
     // use splice to delete the goblin object at this index
-
+    allGoblins.splice(index, 1);
     // update the allGoblins array immutably to this new, smaller array
+    setAllGoblins([...allGoblins]);
   }
 
   function handleFilterGoblins(search) {
@@ -54,6 +62,9 @@ function App() {
             use the goblin form state to make a goblin object and to display it. 
             This will let the user see the current form state 
           */
+          name: goblinFormName,
+          hp: goblinFormHP,
+          color: goblinFormColor,
         }}/>
       </div>
       <div className='goblin-filter quarter'>
@@ -61,7 +72,7 @@ function App() {
         {/* note that handleFilterGoblins is defined upstairs. This is where the allGoblins array gets filtered */}
         <input onChange={(e) => handleFilterGoblins(e.target.value)} />
       </div>
-      <GoblinForm 
+      <GoblinForm submitGoblin={submitGoblin} goblinFormName={goblinFormName} setGoblinFormName={setGoblinFormName} goblinFormColor={goblinFormColor} setGoblinFormColor={setGoblinFormColor} goblinFormHP={setGoblinFormHP}
         /*
         This component takes in a ton of props! 
         Here is the list of props to pass:
