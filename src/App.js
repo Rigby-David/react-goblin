@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import GoblinForm from './GoblinForm';
 import GoblinList from './GoblinList';
@@ -14,10 +14,11 @@ function App() {
       goblinFormColor, which is how we track the user input for the current color of the goblin in the form
 */
   const [allGoblins, setAllGoblins] = useState([]);
-  const [visibleGoblins, setVisibleGoblins] = useState([]);
+  const [visibleGoblins, setVisibleGoblins] = useState(allGoblins);
   const [goblinFormName, setGoblinFormName] = useState('');
   const [goblinFormHP, setGoblinFormHP] = useState('');
   const [goblinFormColor, setGoblinFormColor] = useState('');
+  const [filterString, setFilterString] = useState('');
 
 
   function submitGoblin(e) {
@@ -46,13 +47,19 @@ function App() {
     setAllGoblins([...allGoblins]);
   }
 
-  function handleFilterGoblins(search) {
+  function handleFilterGoblins(filterString) {
     // use the filter method to get an array of goblins whose name includes this search argument
-
+    setFilterString(filterString);
     // if there is a search argument, set the visible goblins to the filtered goblins
     // if the search argument is undefined, set the visible goblins in state to just be the array of all goblins
+    const updatedGoblins = allGoblins.filter(newGoblin => newGoblin.name.includes(filterString));
+    setVisibleGoblins(updatedGoblins);
   }
 
+  useEffect(() => {
+    setVisibleGoblins(allGoblins);
+    setFilterString('');
+  }, [allGoblins]);
 
   return (
     <div className="App">
@@ -70,7 +77,8 @@ function App() {
       <div className='goblin-filter quarter'>
         Filter Goblins
         {/* note that handleFilterGoblins is defined upstairs. This is where the allGoblins array gets filtered */}
-        <input onChange={(e) => handleFilterGoblins(e.target.value)} />
+
+        <input value={filterString} onChange={(e) => handleFilterGoblins(e.target.value)} />
       </div>
       <GoblinForm 
         submitGoblin={submitGoblin} 
@@ -93,7 +101,7 @@ function App() {
         */
       />
       <GoblinList 
-        goblins={allGoblins || visibleGoblins} // this takes in an array of goblins. If the filteredGoblins has a length, use that array. Otherwise, use the allGoblins array 
+        visibleGoblins={visibleGoblins} // this takes in an array of goblins. If the filteredGoblins has a length, use that array. Otherwise, use the allGoblins array 
         handleDeleteGoblin={handleDeleteGoblin} // note that the goblin list has access to the ability to delete
       />
     </div>
